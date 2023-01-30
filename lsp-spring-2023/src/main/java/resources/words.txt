@@ -1,0 +1,13 @@
+Design 200and code a program that reads a text 
+file, and300 counts the number of times each word that it 
+contains appears 100 234567654
+234
+3456
+qwerty'asdfgh
+98765
+!!!
+"""
+{}}{()@&#%#
+you're
+qwerty'asdfgh
+qwerty'asdfgh

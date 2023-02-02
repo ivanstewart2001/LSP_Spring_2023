@@ -27,28 +27,23 @@ public class Driver {
 		});
 	}
 	
-	public static String formatString(String input) {
-		String formattedString = "";
-		for (int index = 0; index < input.length(); index++) {
-			char lowercased = Character.toLowerCase(input.charAt(index));
-			int ascii = lowercased;
-			if (ascii >= 97 && ascii <= 122) {
-				formattedString += lowercased;
-			} else if (ascii == 32) {
-				// to account for spaces
-				formattedString += input.charAt(index);
-			} else if (ascii == 39) {
-				// to account for apostrophe
-				formattedString += " ";
+	public static List<String> formatString(String input) {
+		String[] splited = input.split("\\s+");
+		List<String> formatted = new ArrayList<>();
+		for (String word: splited) {
+			try {
+				int number = Integer.parseInt(word);
+			} catch (Exception e) {
+				formatted.add(word);
 			}
 		}
 		
-		return formattedString;
+		return formatted;
 	}
 	
-	public static List<String> removeTrivialWords(String[] inputList) {
+	public static List<String> removeTrivialWords(List<String> formattedString) {
 		List<String> nonTrivialWords = new ArrayList<>();
-		for (String word: inputList) {
+		for (String word: formattedString) {
 			if (word.length() > 3) {
 				nonTrivialWords.add(word);
 			}
@@ -58,29 +53,26 @@ public class Driver {
 	}
 	
 	public static Hashtable<String, Integer> getWordOccurances(String string) {
-		// This function will take a string and remove anything not alphabetic and
-		// store it in a list
+		// This function will take a string and remove anything that is not 
+		// a string and store it in a hashtable
 
 		// Removes all newlines from string
 		string = string.replace("\n", " ");
 		
-		// removes everything that isn't a space or
-		// character from string
-		String formattedString = formatString(string);
-
-		// creates a list of each word separated by space
-		String[] splited = formattedString.split("\\s+");
+		// removes all numbers and returns a list of strings
+		List<String> formattedString = formatString(string);
 		
 		// removed 'trivial' words from list first
-		List<String> nonTrivialWords = removeTrivialWords(splited);
+		List<String> nonTrivialWords = removeTrivialWords(formattedString);
 
 		Hashtable<String, Integer> wordOccurances = new Hashtable<String, Integer>();
 		for (String word: nonTrivialWords) {
-			if (wordOccurances.containsKey(word)) {
-				int currentNumberOfOccurances = wordOccurances.get(word);
-				wordOccurances.put(word, currentNumberOfOccurances+1);
+			String lowercasedWord = word.toLowerCase();
+			if (wordOccurances.containsKey(lowercasedWord)) {
+				int currentNumberOfOccurances = wordOccurances.get(lowercasedWord);
+				wordOccurances.put(lowercasedWord, currentNumberOfOccurances+1);
 			} else {
-				wordOccurances.put(word, 1);
+				wordOccurances.put(lowercasedWord, 1);
 			}
 		}
 		
